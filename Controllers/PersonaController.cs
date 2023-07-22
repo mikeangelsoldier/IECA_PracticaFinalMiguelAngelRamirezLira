@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using PracticaFinalMiguelAngelRamirezLira.Data;
 using PracticaFinalMiguelAngelRamirezLira.Models;
 
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 namespace PracticaFinalMiguelAngelRamirezLira.Controllers
 {
     [Route("api/[controller]")]
@@ -20,7 +23,7 @@ namespace PracticaFinalMiguelAngelRamirezLira.Controllers
         {
             _context = context;
         }
-
+/*
         // GET: api/Persona
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PersonaItem>>> GetPersonaItem()
@@ -120,5 +123,73 @@ namespace PracticaFinalMiguelAngelRamirezLira.Controllers
         {
             return (_context.PersonaItem?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+
+*/
+
+
+
+        /************************************************/
+
+
+
+        [HttpGet]
+        [Route("Lista")]
+        public async Task<IActionResult> Lista()
+        {
+
+            JsonSerializerOptions options = new()
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                WriteIndented = true
+            };
+
+            List<PersonaItem> lista = await _context.PersonaItem
+            .OrderByDescending(c => c.Id)
+            .ToListAsync();
+
+            return StatusCode(StatusCodes.Status200OK, lista);
+        }
+
+
+        [HttpPost]
+        [Route("Guardar")]
+        public async Task<IActionResult> Guardar([FromBody] PersonaItem request)
+        {
+            await _context.PersonaItem.AddAsync(request);
+            await _context.SaveChangesAsync();
+
+            return StatusCode(StatusCodes.Status200OK, "ok");
+        }
+
+
+
+        [HttpPut]
+        [Route("Editar")]
+        public async Task<IActionResult> Editar([FromBody] PersonaItem request)
+        {
+            _context.PersonaItem.Update(request);
+            await _context.SaveChangesAsync();
+
+            return StatusCode(StatusCodes.Status200OK, "ok");
+        }
+
+
+
+        [HttpDelete]
+        [Route("Eliminar/{id:int}")]
+        public async Task<IActionResult> Eliminar(int id)
+        {
+            PersonaItem personaItem = _context.PersonaItem.Find(id);
+
+            _context.PersonaItem.Remove(personaItem);
+            await _context.SaveChangesAsync();
+
+            return StatusCode(StatusCodes.Status200OK, "ok");
+        }
+
+
+
+
     }
 }
