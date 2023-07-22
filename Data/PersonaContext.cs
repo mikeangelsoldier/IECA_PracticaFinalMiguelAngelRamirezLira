@@ -14,6 +14,6 @@ namespace PracticaFinalMiguelAngelRamirezLira.Data
         {
         }
 
-        public DbSet<PracticaFinalMiguelAngelRamirezLira.Models.PersonaItem> PersonaItems { get; set; } = default!;
+        public DbSet<PracticaFinalMiguelAngelRamirezLira.Models.PersonaItem> PersonaItem { get; set; } = default!;
     }
 }

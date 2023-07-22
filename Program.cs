@@ -1,13 +1,19 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PracticaFinalMiguelAngelRamirezLira.Data;
+using PracticaFinalMiguelAngelRamirezLira.Models;
+
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<PersonaContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("PersonaContext") ?? throw new InvalidOperationException("Connection string 'PersonaContext' not found.")));
 
 // Add services to the container.
 
+/*
 builder.Services.AddControllersWithViews();
+*/
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -18,7 +24,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
