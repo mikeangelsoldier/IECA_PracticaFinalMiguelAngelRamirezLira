@@ -15,9 +15,16 @@ const ModalPersona = ({ showModalPersona, setShowModalPersona, setPersonaAEditar
     const actualizaDato = (e) => {
         console.log(e.target.name + " : " + e.target.value);
 
-        setCurrentPersonaData({
-            ...currentPersonaData, [e.target.name]: e.target.value
-        });
+
+        if (e.target.name == 'isCompleted') {
+            setCurrentPersonaData({
+                ...currentPersonaData, [e.target.name]: (e.target.value == 'on' ? true : false)
+            });
+        } else {
+            setCurrentPersonaData({
+                ...currentPersonaData, [e.target.name]: e.target.value
+            });
+        }
     }
 
     const enviarDatos = () => {
@@ -27,6 +34,8 @@ const ModalPersona = ({ showModalPersona, setShowModalPersona, setPersonaAEditar
         } else {
             editarPersona(currentPersonaData); //
         }
+
+        setCurrentPersonaData(modeloDefaultPersona);
     }
 
     useEffect(() => {
@@ -63,7 +72,12 @@ const ModalPersona = ({ showModalPersona, setShowModalPersona, setPersonaAEditar
 
                     <FormGroup>
                         <Label>Es completado</Label>
+                        {/*
                         <Input name="isCompleted" onChange={(e) => actualizaDato(e)} value={currentPersonaData.isCompleted} />
+    */}
+
+                        <Input name="isCompleted" type="switch" role="switch" checked={currentPersonaData.isCompleted ? 'on' : ''}
+                            onChange={(e) => actualizaDato(e)} />
                     </FormGroup>
                 </Form>
             </ModalBody>
